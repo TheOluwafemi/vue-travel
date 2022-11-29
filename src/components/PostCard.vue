@@ -1,19 +1,20 @@
-<template lang="html">
+<template>
     <div class="card">
         <div class="card-text">
             Post {{ post.id }}
         </div>
 
         <div class="card-controls">
-            <img v-if="currentKey > 0" src="@/assets/icons/caret-up.svg" class="arrow" alt="move up"
+            <img v-if="currentKey > 0" src="@/assets/icons/caret-up.svg" class="arrow arrow-up" alt="move up"
                 @click="$emit('moveCard', { action: 'up', id: post.id })">
-            <img v-if="currentKey < 4" src="@/assets/icons/caret-down.svg" class="arrow" alt="move down"
-                @click="$emit('moveCard', { action: 'down', id: post.id })">
+            <img v-if="currentKey < postsLength - 1" src="@/assets/icons/caret-down.svg" class="arrow arrow-down"
+                alt="move down" @click="$emit('moveCard', { action: 'down', id: post.id })">
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -26,6 +27,9 @@ export default {
             type: Number,
             required: false
         }
+    },
+    computed: {
+        ...mapGetters(['postsLength'])
     }
 }
 </script>

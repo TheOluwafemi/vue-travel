@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
     <div class="actions">
         <div class="actions-title">
             List of actions commited
@@ -8,12 +8,12 @@
             <template v-if="commitActions.length">
                 <div v-for="commit, index in commitActions" :key="index" class="card">
                     <p class="card-text">{{ commit.action }} </p>
-                    <button class="card-btn" @click.prevent="undoAction(commit.id)">Time Travel</button>
+                    <button class="card-btn" @click.prevent="$emit('undoCommit', commit.id)">Time Travel</button>
                 </div>
             </template>
 
             <template v-else>
-                <small>There are no actions at the moment. Move the cards on the left to see actions history.</small>
+                <small class="empty-msg">There are no actions at the moment. Move the cards on the left to see actions history.</small>
             </template>
         </div>
     </div>
@@ -23,18 +23,8 @@
 import { mapState } from 'vuex';
 
 export default {
-    data() {
-        return {
-            
-        }
-    },
     computed: {
         ...mapState(['commitActions'])
-    },
-    methods: {
-        undoAction(id) {
-            this.$store.dispatch('timeTravel', id);
-        }
     }
 }
 </script>

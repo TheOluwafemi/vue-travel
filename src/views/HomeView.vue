@@ -1,12 +1,12 @@
 <template>
   <main class="home">
     <section class="home-cards">
-      <div class="posts">
-        <PostCard v-for="post, index in posts" :key="index" :post="post" :currentKey="index" @moveCard="moveCard" />
+      <div v-if="posts.length" class="posts">
+        <PostCard v-for="post, index in posts" :key="index" :post="post" :currentKey="index" @moveCard="handleMoveCard" />
       </div>
 
       <div class="actions">
-        <ActionsCard />
+        <ActionsCard @undoCommit="undoCommit" />
       </div>
     </section>
 
@@ -30,8 +30,11 @@ export default {
     ...mapState(['posts'])
   },
   methods: {
-    moveCard(payload) {
+    handleMoveCard(payload) {
       this.$store.dispatch("moveCard", payload)
+    },
+    undoCommit(id) {
+      this.$store.dispatch('timeTravel', id);
     }
   }
 };

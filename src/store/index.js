@@ -8,7 +8,7 @@ function moveArray(array, from, to) {
   if (to === from) return array // return same array if the to-position is same from-postion
   if (to < 0 || to > arrayLength - 1) return array // return same array if new position is out of array bounds
 
-  let currentIndex = array[from] 
+  let currentIndex = array[from]
   let movement = to < from ? -1 : 1
 
   for (let i = from; i !== to; i += movement) {
@@ -19,71 +19,85 @@ function moveArray(array, from, to) {
   return array
 }
 
-export default new Vuex.Store({
-  state: {
-    posts: [],
-    commitActions: [],
-  },
-  getters: {},
-  mutations: {
-    updatePosts(state, payload) {
-      state.posts = [...payload]
-    },
-    updatePostMovement(state, payload) {
-      const currentPostsState = [...state.posts]
-      const paylaodPostion = state.posts
-        .map((item) => item.id)
-        .indexOf(payload.id)
+const state = {
+  posts: [],
+  commitActions: [],
+}
 
-      state.posts = [
-        ...moveArray(
-          state.posts,
-          paylaodPostion,
-          payload.action === 'up' ? paylaodPostion - 1 : paylaodPostion + 1
-        ),
-      ]
-      const newCommit = {
-        id: Date.now(),
-        action:
-          payload.action === 'up'
-            ? `Moved post from index ${paylaodPostion} to index ${
-                paylaodPostion - 1
-              }`
-            : `Moved post from index ${paylaodPostion} to index ${
-                paylaodPostion + 1
-              }`,
-        postsState: currentPostsState,
-      }
-      state.commitActions = [newCommit, ...state.commitActions]
-    },
-    updateTimeTravel(state, payload) {
-      const activeCommit = state.commitActions.filter(
-        (item) => item.id === payload
+export const getters = {
+  postsLength(state) {
+    return state.posts.length
+  },
+}
+
+export const mutations = {
+  updatePosts(state, payload) {
+    state.posts = [...payload]
+  },
+  updatePostMovement(state, payload) {
+    const currentPostsState = [...state.posts]
+    const payloadPosition = state.posts
+      .map((item) => item.id)
+      .indexOf(payload.id)
+
+    state.posts = [
+      ...moveArray(
+        state.posts,
+        payloadPosition,
+        payload.action === 'up' ? payloadPosition - 1 : payloadPosition + 1,
+      ),
+    ]
+    const newCommit = {
+      id: Date.now(),
+      action:
+        payload.action === 'up'
+          ? `Moved post from index ${payloadPosition} to index ${
+              payloadPosition - 1
+            }`
+          : `Moved post from index ${payloadPosition} to index ${
+              payloadPosition + 1
+            }`,
+      postsState: currentPostsState,
+    }
+    state.commitActions = [newCommit, ...state.commitActions]
+  },
+  updateTimeTravel(state, payload) {
+    const activeCommit = state.commitActions.filter(
+      (item) => item.id === payload,
+    )
+    const commitPosition = state.commitActions
+      .map((item) => item.id)
+      .indexOf(payload)
+    state.posts = [...activeCommit[0]['postsState']]
+    state.commitActions.splice(0, commitPosition + 1)
+  },
+}
+
+export const actions = {
+  async getPosts({ commit }) {
+    try {
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/posts?_start=0&_limit=5',
       )
-      const commitPosition = state.commitActions.map(item => item.id).indexOf(payload);
-      state.posts = [...activeCommit[0]['postsState']]
-      state.commitActions.splice(0, commitPosition + 1);
-    },
+      let posts = await response.json()
+      commit('updatePosts', posts)
+    } catch (error) {
+      console.error(error.message)
+      throw error
+    }
   },
-  actions: {
-    async getPosts({ commit }) {
-      try {
-        const response = await fetch(
-          'https://jsonplaceholder.typicode.com/posts?_start=0&_limit=5'
-        )
-        let posts = await response.json()
-        commit('updatePosts', posts)
-      } catch (error) {
-        console.error(error.message)
-        throw error
-      }
-    },
-    moveCard({ commit }, payload) {
-      commit('updatePostMovement', payload)
-    },
-    timeTravel({ commit }, payload) {
-      commit('updateTimeTravel', payload)
-    },
+  moveCard({ commit }, payload) {
+    commit('updatePostMovement', payload)
   },
+  timeTravel({ commit }, payload) {
+    commit('updateTimeTravel', payload)
+  },
+}
+
+export default new Vuex.Store({
+  state,
+  getters,
+  mutations,
+  actions,
   modules: {},
 })

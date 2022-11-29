@@ -1,13 +1,11 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import storeConfig from '../../src/store/index'
 import ActionsCard from '@/components/ActionsCard.vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('ActionsCard component', () => {
-  let actions
   let store
   let state
 

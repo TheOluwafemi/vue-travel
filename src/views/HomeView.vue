@@ -2,7 +2,8 @@
   <main class="home">
     <section class="home-cards">
       <div v-if="posts.length" class="posts">
-        <PostCard v-for="post, index in posts" :key="index" :post="post" :currentKey="index" @moveCard="handleMoveCard" />
+        <PostCard v-for="post, index in posts" :key="index" :post="post" :currentKey="index"
+          @moveCard="handleMoveCard" />
       </div>
 
       <div class="actions">
@@ -43,10 +44,10 @@ export default {
 <style scoped lang="scss">
 .home {
   min-height: 100vh;
-  padding: 2rem;
+  margin: 4rem;
 
   @media only screen and (max-width: 600px) {
-    padding: 1rem;
+    margin: 2rem;
   }
 
   &-cards {
@@ -56,18 +57,43 @@ export default {
     gap: 4rem;
     margin-top: 4rem;
     flex-wrap: wrap;
+    position: relative;
 
     .posts {
-      flex-basis: 30%;
+      flex: 0 0 30%;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       gap: 1rem;
+
+      @media only screen and (max-width: 1024px) {
+        flex: 0 0 40%;
+      }
+
+      @media only screen and (max-width: 768px) {
+        flex: 0 0 45%;
+      }
+
+      @media only screen and (max-width: 600px) {
+        flex: 0 0 90%;
+      }
     }
 
     .actions {
-      flex-basis: 30%;
+      flex: 0 0 30%;
+
+      @media only screen and (max-width: 1024px) {
+        flex: 0 0 40%;
+      }
+
+      @media only screen and (max-width: 768px) {
+        flex: 0 0 45%;
+      }
+
+      @media only screen and (max-width: 600px) {
+        flex: 0 0 90%;
+      }
     }
   }
 }

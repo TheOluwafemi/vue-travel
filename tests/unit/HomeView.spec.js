@@ -67,13 +67,13 @@ describe('HomeView', () => {
     expect(postCards.length).toEqual(posts.length)
   })
 
-  it('move the card when an arrow is clicked -- when moveCard event is emitted', async () => {
+  it('HomeView receives a moveCard event when arrow on PostCard component is clicked', async () => {
     const spyHandleMoveCard = jest.spyOn(HomeView.methods, 'handleMoveCard')
     const wrapper = shallowMount(HomeView, {
       store,
       localVue,
       stubs: {
-        PostCard,
+        PostCard
       },
       mocks: {
         $store: {
@@ -98,7 +98,7 @@ describe('HomeView', () => {
     spyHandleMoveCard.mockReset()
   })
 
-  it('time travels when the timeTravel button is clicked -- when the undoCommit event is emitted', async () => {
+  it('HomeView received an undoCommit event when the time travel button is clicked', async () => {
     const spyUndoCommit = jest.spyOn(HomeView.methods, 'undoCommit')
     const wrapper = shallowMount(HomeView, {
       store,

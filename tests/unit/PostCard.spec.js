@@ -16,6 +16,13 @@ beforeEach(() => {
       post,
       currentKey: 1,
     },
+    mocks: {
+      $store: {
+        getters: {
+          postsLength: () => 5,
+        },
+      },
+    },
     computed: {
       postsLength: () => 5,
     },
@@ -23,7 +30,7 @@ beforeEach(() => {
 })
 
 describe('PostCard component', () => {
-  it('test accepts and renders props passed to it', () => {
+  it('accepts props and renders component based on props passed to it', () => {
     const postCardElement = wrapper.findAll('.card')
     const postText = wrapper.find('.card-text')
 

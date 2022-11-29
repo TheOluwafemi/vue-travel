@@ -23,11 +23,13 @@
 import { mapState } from 'vuex';
 
 export default {
+    name: 'ActionsCard',
     computed: {
         ...mapState(['commitActions'])
     }
 }
 </script>
+
 <style lang="scss" scoped>
 .actions {
     background: grey;

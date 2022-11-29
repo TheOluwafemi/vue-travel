@@ -1,8 +1,4 @@
-import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
-import Vuex from 'vuex'
-import storeConfig from '../../src/store/index'
-import { actions, mutations } from '../../src/store/index'
-const cloneDeep = require('lodash.cloneDeep')
+import { mutations } from '../../src/store/index'
 
 const newPosts = [
   {
@@ -32,7 +28,7 @@ const newPosts = [
 ]
 
 describe('Store Mutations', () => {
-  it('posts get updated', async () => {
+  it('updates posts', async () => {
     const state = { posts: [] }
     const { updatePosts } = mutations
 
@@ -40,7 +36,7 @@ describe('Store Mutations', () => {
     expect(state.posts).toHaveLength(4)
   })
 
-  it('posts get moved', async () => {
+  it('moves post', async () => {
     const state = { posts: newPosts, commitActions: [] }
     const { updatePostMovement } = mutations
 
